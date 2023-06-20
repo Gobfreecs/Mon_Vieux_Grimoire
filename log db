@@ -1,0 +1,11 @@
+test-grimoire
+Rga0zWu2B8nynJaK
+
+
+mongoose.connect('mongodb+srv://test-grimoire:Rga0zWu2B8nynJaK@mon-vieux-grimoire.rrozapz.mongodb.net/?retryWrites=true&w=majority',
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
