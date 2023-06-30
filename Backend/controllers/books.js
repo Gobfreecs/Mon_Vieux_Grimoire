@@ -10,7 +10,6 @@ exports.createBook = (req, res, next) => {
         userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
-
     book.save()
         .then(() => { res.status(201).json({ message: 'Objet enregistré !' }) })
         .catch(error => { res.status(400).json({ error }) })
@@ -60,7 +59,9 @@ exports.updateBook = (req, res, next) => {
 exports.showBook = (req, res, next) => {
     Book.findOne({
         _id: req.params.id
+
     }).then(
+
         (book) => {
             res.status(200).json(book);
         }
@@ -88,11 +89,35 @@ exports.showallBooks = (req, res, next) => {
 }
 
 // exports.bestratingBooks = (req, res, next) => {
+//     Book.find().then(
+//         (book) => {
+//             book.sort(function (a, b) {
+//                 return b.averageRating - a.averageRating;
+//             });
 
+//             res.status(200).json(book.slice(0, 3));
+//         }
+//     ).catch(
+//         (error) => {
+//             res.status(400).json({
+//                 error: error
+//             });
+//         }
+//     );
 // }
 
 // exports.ratingBook = (req, res, next) => {
-//     const rating = new Rating({
-//         rating: req.body.rating
-//     })
-// }
+//     const bookObject = req.file ? {
+//         ...JSON.parse(req.body.book.grade),
+//     } : {};
+
+//     Book.findOne({ _id: req.params.id })
+//         .then((bookObject) => {
+//             Book.updateOne({ userId: userId, grade: bookObject.grade })
+//                 .then(() => res.status(200).json({ message: 'Note Enregistrée' }))
+//                 .catch(error => res.status(401).json({ error }));
+//         })
+//         .catch((error) => {
+//             res.status(400).json({ error });
+//         });
+// };
