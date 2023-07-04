@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bookRoutes = require('./routes/books')
 const userRoutes = require('./routes/auth')
 const path = require('path');
+
 const app = express();
 
 
@@ -20,9 +21,9 @@ mongoose.connect('mongodb+srv://test-grimoire:Rga0zWu2B8nynJaK@mon-vieux-grimoir
     })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
-
-
 app.use(express.json());
+
+
 
 app.use('/api/books', bookRoutes);
 
