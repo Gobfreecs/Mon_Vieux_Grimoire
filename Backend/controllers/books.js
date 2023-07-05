@@ -51,19 +51,21 @@ exports.updateBook = (req, res, next) => {
                 const oldImageUrl = book.imageUrl;
                 const newImageUrl = bookObject.imageUrl;
 
+
+                const isImageUrlUpdated = oldImageUrl && oldImageUrl !== newImageUrl;
+
                 Book.updateOne({ _id: req.params.id }, { ...bookObject, _id: req.params.id })
                     .then(() => {
-                        if (oldImageUrl && oldImageUrl !== newImageUrl) {
+                        if (isImageUrlUpdated) {
                             const filename = oldImageUrl.split('/images/processed-')[1];
                             fs.unlink(`images/processed-${filename}`, (err) => {
                                 if (err) {
-                                    console.error('Erreur lors de la suppression de l\'ancienne image', err);
+                                    console.error("Erreur lors de la suppression de l'ancienne image", err);
                                 } else {
                                     console.log('Ancienne image supprimée');
                                 }
                             });
                         }
-
                         res.status(200).json({ message: 'Objet modifié!' });
                     })
                     .catch(error => res.status(401).json({ error }));
@@ -159,17 +161,3 @@ exports.ratingBook = (req, res, next) => {
             res.status(500).json({ error });
         });
 };
-
-
-
-
-// exports.ratingBook = (req, res, next) => {
-//     const { userId, grade } = req.body.book;
-
-//     Book.findOneAndUpdate(
-//         { _id: req.params.id },
-//         { $push: { ratings: [{ userId: userId, grade: grade }] } },
-//     )
-//         .then(() => res.status(200).json({ message: 'Note enregistrée' }))
-//         .catch(error => res.status(500).json({ error }));
-// };
