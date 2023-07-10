@@ -1,5 +1,4 @@
 const Book = require('../models/Books');
-const processImage = require('../sharp/resize');
 const fs = require('fs');
 
 exports.createBook = (req, res, next) => {
@@ -36,10 +35,12 @@ exports.deleteBook = (req, res, next) => {
 };
 
 exports.updateBook = (req, res, next) => {
-    const bookObject = req.file ? {
-        ...JSON.parse(req.body.book),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/processed-${req.file.filename}`
-    } : { ...req.body };
+    const bookObject = req.file
+        ? {
+            ...JSON.parse(req.body.book),
+            imageUrl: `${req.protocol}://${req.get('host')}/images/processed-${req.file.filename}`
+        }
+        : { ...req.body };
 
     delete bookObject._userId;
 
@@ -50,7 +51,6 @@ exports.updateBook = (req, res, next) => {
             } else {
                 const oldImageUrl = book.imageUrl;
                 const newImageUrl = bookObject.imageUrl;
-
 
                 const isImageUrlUpdated = oldImageUrl && oldImageUrl !== newImageUrl;
 
@@ -66,7 +66,7 @@ exports.updateBook = (req, res, next) => {
                                 }
                             });
                         }
-                        res.status(200).json({ message: 'Objet modifié!' });
+                        res.status(200).json({ message: 'Objet modifié!', imageUrl: newImageUrl });
                     })
                     .catch(error => res.status(401).json({ error }));
             }
